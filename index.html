@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Food Nutrition Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: #e0e0e0;
+      padding: 20px;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+    }
+
+    .sidebar li {
+      list-style: none;
+      margin: 8px 0;
+      cursor: pointer;
+      padding: 6px;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+    }
+
+    .sidebar li:hover {
+      background-color: #dcdcdc;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 50px;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+
+    input {
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 30px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h3>Popular Foods</h3>
+    <ul id="foodList">
+      <li onclick="autoSearch('banana')">🍌 Banana</li>
+      <li onclick="autoSearch('poha')">🥣 Poha</li>
+      <li onclick="autoSearch('grapes')">🍇 Grapes</li>
+      <li onclick="autoSearch('museli')">🥄 Museli</li>
+      <li onclick="autoSearch('mayonnaise')">🧴 Mayonnaise</li>
+      <li onclick="autoSearch('jam')">🍓 Jam</li>
+      <li onclick="autoSearch('peanut butter')">🥜 Peanut Butter</li>
+      <li onclick="autoSearch('pbj sandwich')">🍞 PBJ Sandwich</li>
+      <li onclick="autoSearch('chapati')">🍽️ Chapati</li>
+      <li onclick="autoSearch('millets')">🌾 Millets</li>
+      <li onclick="autoSearch('paneer butter masala')">🧈 Paneer Butter Masala</li>
+      <li onclick="autoSearch('kadai paneer')">🍲 Kadai Paneer</li>
+      <li onclick="autoSearch('palak rice')">🌿 Palak Rice</li>
+      <li onclick="autoSearch('fried rice')">🍚 Fried Rice</li>
+      <li onclick="autoSearch('biryani')">🍛 Biryani</li>
+      <li onclick="autoSearch('curd rice')">🍶 Curd Rice</li>
+      <li onclick="autoSearch('sweet pongal')">🍯 Sweet Pongal</li>
+      <li onclick="autoSearch('apple')">🍎 Apple</li>
+      <li onclick="autoSearch('orange')">🍊 Orange</li>
+      <li onclick="autoSearch('watermelon')">🍉 Watermelon</li>
+      <li onclick="autoSearch('mango')">🥭 Mango</li>
+      <li onclick="autoSearch('carrot')">🥕 Carrot</li>
+      <li onclick="autoSearch('cucumber')">🥒 Cucumber</li>
+      <li onclick="autoSearch('beetroot')">🫚 Beetroot</li>
+      <li onclick="autoSearch('sweet corn')">🌽 Sweet Corn</li>
+      <li onclick="autoSearch('potato')">🥔 Potato</li>
+      <li onclick="autoSearch('onion')">🧅 Onion</li>
+      <li onclick="autoSearch('tomato')">🍅 Tomato</li>
+      <li onclick="autoSearch('cabbage')">🥬 Cabbage</li>
+      <li onclick="autoSearch('spinach')">🌿 Spinach</li>
+      <li onclick="autoSearch('broccoli')">🥦 Broccoli</li>
+      <li onclick="autoSearch('peas')">🟢 Peas</li>
+      <li onclick="autoSearch('cauliflower')">🧄 Cauliflower</li>
+      <li onclick="autoSearch('brinjal')">🍆 Brinjal</li>
+      <li onclick="autoSearch('ladyfinger')">🟩 Ladyfinger</li>
+      <li onclick="autoSearch('ridge gourd')">🌱 Ridge Gourd</li>
+      <li onclick="autoSearch('bottle gourd')">🍈 Bottle Gourd</li>
+      <li onclick="autoSearch('moong dal')">🌕 Moong Dal</li>
+      <li onclick="autoSearch('urad dal')">⚫ Urad Dal</li>
+      <li onclick="autoSearch('toor dal')">🟡 Toor Dal</li>
+      <li onclick="autoSearch('chickpeas')">🟤 Chickpeas</li>
+      <li onclick="autoSearch('rajma')">🔴 Rajma</li>
+      <li onclick="autoSearch('milk')">🥛 Milk</li>
+      <li onclick="autoSearch('curd')">🍶 Curd</li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <h1>🍎 Food Nutrition Checker</h1>
+    <input type="text" id="foodInput" placeholder="Enter a food name">
+    <button onclick="searchFood()">Search</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const giDatabase = {
+      "banana": 62, "poha": 70, "grapes": 59, "museli": 66, "mayonnaise": 0,
+      "jam": 65, "peanut butter": 35, "pbj sandwich": 70, "chapati": 62, "millets": 54,
+      "paneer butter masala": 60, "kadai paneer": 58, "palak rice": 55, "fried rice": 64,
+      "biryani": 69, "curd rice": 61, "sweet pongal": 68, "apple": 38, "orange": 42,
+      "watermelon": 72, "mango": 60, "carrot": 35, "cucumber": 15, "beetroot": 64,
+      "sweet corn": 60, "potato": 82, "onion": 10, "tomato": 30, "cabbage": 15,
+      "spinach": 15, "broccoli": 10, "peas": 22, "cauliflower": 15, "brinjal": 15,
+      "ladyfinger": 20, "ridge gourd": 14, "bottle gourd": 15, "moong dal": 38,
+      "urad dal": 43, "toor dal": 47, "chickpeas": 28, "rajma": 27, "milk": 27, "curd": 35
+    };
+
+    async function searchFood() {
+      const food = document.getElementById('foodInput').value;
+      const appId = '820eebb1';
+      const appKey = '1ab36d57e8de9cd9c9a9736b37f7d437';
+
+      const url = 'https://trackapi.nutritionix.com/v2/natural/nutrients';
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-app-id': appId,
+            'x-app-key': appKey
+          },
+          body: JSON.stringify({ query: food })
+        });
+
+        const data = await response.json();
+
+        if (data.foods && data.foods.length > 0) {
+          const item = data.foods[0];
+          const giValue = giDatabase[item.food_name.toLowerCase()] || "GI not available";
+
+          const blinkitLink = `https://blinkit.com/s/?q=${encodeURIComponent(item.food_name)}`;
+          const zeptoLink = `https://www.zeptonow.com/search?q=${encodeURIComponent(item.food_name)}`;
+          const swiggyLink = `https://www.swiggy.com/search?query=${encodeURIComponent(item.food_name)}`;
+
+          document.getElementById('result').innerHTML = `
+            <h3>Results for "${item.food_name}":</h3>
+            <p><strong>Calories:</strong> ${item.nf_calories} kcal</p>
+            <p><strong>Protein:</strong> ${item.nf_protein} g</p>
+            <p><strong>Carbs:</strong> ${item.nf_total_carbohydrate} g</p>
+            <p><strong>Fat:</strong> ${item.nf_total_fat} g</p>
+            <p><strong>Sugar:</strong> ${item.nf_sugars ?? 'N/A'} g</p>
+            <p><strong>Glycemic Index (GI):</strong> ${giValue}</p>
+            <p><a href="${blinkitLink}" target="_blank">🛒 Check on Blinkit</a></p>
+            <p><a href="${zeptoLink}" target="_blank">🛍️ Check on Zepto</a></p>
+            <p><a href="${swiggyLink}" target="_blank">🚚 Check on Swiggy Instamart</a></p>
+          `;
+        } else {
+          document.getElementById('result').innerText = "No results found.";
+        }
+      } catch (error) {
+        document.getElementById('result').innerText = "Error fetching data. Try again.";
+        console.error(error);
+      }
+    }
+
+    function autoSearch(foodName) {
+      document.getElementById('foodInput').value = foodName;
+      searchFood();
+    }
+  </script>
+
+  <!-- Chatbot Embed -->
+  <script src="//code.tidio.co/jec2n4par9maqgfqezsos6fsacqj4rrh.js"></script>
+
+
+
+</body>
+</html>
